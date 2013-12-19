@@ -8,7 +8,7 @@
 	<title>Women in Software</title>
 </head>
 <body>
-	<div id="header"><a id="home" href="index.html"><div class="circ"></div></a><a href="index.html"><h1>Percentage of male and female engineers in software companies</h1></a>s</div>
+	<div id="header"><a id="home" href="index.html"><div class="circ"></div></a><a id="title" href="index.html">Gender ratios in software companies</a></div>
 	<div id="side">
 		<form>
 		<p class="small">Sort by:</p>
@@ -41,7 +41,7 @@
 	var tall = 35;
 	var padding = 8;
 	var reversed = false;
-	var offset = 0;
+	var offset = 50;
 	// scale to size boxes according to the percentage of the companies total employees
 	var percent_scale = d3.scale.linear()
 		.domain([0,100])
@@ -49,7 +49,7 @@
 	var svg = d3.select("body")
 		.append("svg")
 		.attr("width", width + 50)
-		.attr("height", height);
+		.attr("height", height)
 	svg.append("rect")
 		.attr("fill", "#ffffff")
 		.attr("x", (width/2)-110)
@@ -68,18 +68,18 @@
 	var percent_female_workers = 47;
 	svg.append("rect")
 		.attr("x", width/2 - percent_scale(percent_female_workers))
-		.attr("y", 40).attr("width", percent_scale(percent_female_workers))
+		.attr("y", 50).attr("width", percent_scale(percent_female_workers))
 		.attr("height", tall)
-		.attr("class", "female");
+		.style("fill", "#ED427B")
 	svg.append("rect")
-		.attr("x", width/2).attr("y", 40)
+		.attr("x", width/2)
+		.attr("y", 50)
 		.attr("width", percent_scale(100-percent_female_workers))
 		.attr("height", tall)
-		.attr("class", "male");
+		.style("fill", "#374EFA")
 	svg.append("text")
 		.attr("x", (width/2)+10)
-		.attr("y", 60)
-		.attr("class", "label")
+		.attr("y", 72)
 		.text("American workforce");
 	// read in data from csv file, pass it into a function and render the visualization
 	d3.csv("women_in_software.csv", function(company_stats){
@@ -153,18 +153,22 @@
 			m_bars.on("click", company_info);
 			f_bars.on("click", company_info);
 			f_bars.on("mouseover", function(d) {
+				svg.style('cursor','pointer');
 				d3.select("#f" + d.key)
 					.attr("visibility", "visible");
 			});
 			f_bars.on("mouseout", function(d) {
+				svg.style('cursor','default');
 				d3.select("#f" + d.key)
 					.attr("visibility", "hidden");
 			});
 			m_bars.on("mouseover", function(d) {
+				svg.style('cursor','pointer');
 				d3.select("#m" + d.key)
 					.attr("visibility", "visible");
 			});
 			m_bars.on("mouseout", function(d) {
+				svg.style('cursor','default');
 				d3.select("#m" + d.key)
 					.attr("visibility", "hidden");
 			});
