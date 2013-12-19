@@ -94,6 +94,7 @@
 				}
 				update(company_stats);
 			});
+			// reverse data and update when reverse button is pressed
 			d3.select("#reverse").on("click", function(d) {
 				reversed = !reversed;
 				company_stats.reverse();

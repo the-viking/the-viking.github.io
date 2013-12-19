@@ -55,7 +55,7 @@
 			.enter()
 			.append("text")
 			.text(function(d) { return d.description; })
-			.attr("y", function(d,i) { return i*150 + 40; })
+			.attr("y", function(d,i) { return i*150 + 45; })
 			.attr("x", function(d,i) { return width/2 + (rScale(d.salary))+20; })
 			.attr("class", "big");
 		txt.on("mouseover", function(d,i) {
