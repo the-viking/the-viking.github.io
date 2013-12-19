@@ -1,0 +1,19 @@
+.female {
+	fill:#ED427B;
+}
+.male {
+	fill:#374EFA;
+}
+rect {
+	height:40;
+}
+circle {
+	fill:#ffffff;
+}
+line {
+	stroke: #000000;
+	stroke-width:2;
+}
+.big {
+	font-size:130%;
+}

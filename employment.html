@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="d3/d3.v3.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="stylesheet" type="text/css" href="visualization.css" />
+	<title>Women in Software</title>
+</head>
+<body>
+	<div id="header"><a id="home" href="index.html"><div class="circ"></div></a><h1>Percentage of male and female engineers in software companies</h1></div>
+	<div id="side">
+	<form>
+	<p>Sort by:</p>
+		<select id="sort">
+			<option value="size">Company size</option>
+			<option value="perc">Percent women</option>
+			<option value="alph">Alphabetical</option>
+		</select>
+		<button type="button" id="reverse">Reverse</button>
+		<p id="desc">
+			These values are pulled from <a href="https://github.com/triketora/women-in-software-eng">this
+				data repository</a>, and are submitted by people who work at these companies. If you have any 
+			information you'd like to contribute, please visit the page and read more about it.
+		</p>
+	</form>
+	</div>
+	<script type="text/javascript">
+	// constants for sizing and spacing graphics
+	var width = 1000,
+		height = 5000;
+	var tall = 35;
+	var padding = 8;
+	var reversed = false;
+	var offset = 0;
+	// scale to size boxes according to the percentage of the companies total employees
+	var percent_scale = d3.scale.linear()
+		.domain([0,100])
+		.range([0,width/2]);
+	var svg = d3.select("body")
+		.append("svg")
+		.attr("width", width + 50)
+		.attr("height", height);
+	svg.append("rect")
+		.attr("fill", "#ffffff")
+		.attr("x", (width/2)-100)
+		.attr("y", 5)
+		.attr("width",200)
+		.attr("height",25);
+	svg.append("line")
+		.attr("x1", width/2)
+		.attr("y1", 5)
+		.attr("x2", width/2)
+		.attr("y2", 30);
+	svg.append("text").attr("x", (width/2)-100).attr("y",23).attr("class","big").text("% female");
+	svg.append("text").attr("x", (width/2)+20).attr("y",23).attr("class","big").text("% male");
+	// http://www.dol.gov/wb/factsheets/Qf-laborforce-10.htm
+	var percent_female_workers = 47;
+	svg.append("rect")
+		.attr("x", width/2 - percent_scale(percent_female_workers))
+		.attr("y", 40).attr("width", percent_scale(percent_female_workers))
+		.attr("height", tall)
+		.attr("class", "female");
+	svg.append("rect")
+		.attr("x", width/2).attr("y", 40)
+		.attr("width", percent_scale(100-percent_female_workers))
+		.attr("height", tall)
+		.attr("class", "male");
+	svg.append("text")
+		.attr("x", (width/2)+10)
+		.attr("y", 60)
+		.attr("class", "label")
+		.text("American workforce");
+	// read in data from csv file, pass it into a function and render the visualization
+	d3.csv("women_in_software.csv", function(company_stats){
+			// by default, sort by size
+			company_stats.sort(function(a, b) { return b.num_eng - a.num_eng; });
+			d3.select("#sort").on("change", function(d) {
+				var sort_by = this.value;
+				if(sort_by == "size"){	
+					company_stats.sort(function(a, b) { return b.num_eng - a.num_eng; });
+				}
+				if(sort_by == "perc"){	
+					company_stats.sort(function(a, b) { return b.percent_female_eng - a.percent_female_eng; });
+				}
+				if(sort_by == "alph"){	
+					company_stats.sort(function(a, b) {
+						if(a.company < b.company) return -1;
+						if(a.company > b.company) return 1;
+						return 0;
+					});
+				}
+				update(company_stats);
+			});
+			d3.select("#reverse").on("click", function(d) {
+				reversed = !reversed;
+				company_stats.reverse();
+				update(company_stats);
+			});
+			// scale to resize boxes proportionally to the number of employees compared to the largest company
+			var size_scale = d3.scale.linear()
+				.domain([0, d3.max(company_stats, function(d) { return +d.num_eng; })])
+				.range([0, width/2]);
+			var f_bars = svg.selectAll(".female")
+				.data(company_stats)
+				.enter()
+				.append("rect")
+				.attr("class", "female");
+			var m_bars = svg.selectAll(".male")
+				.data(company_stats)
+				.enter()
+				.append("rect")
+				.attr("class", "male");
+			var texts = svg
+				.selectAll(".label")
+				.data(company_stats)
+				.enter()
+				.append("text")
+				.attr("class", "label");
+			var m_percs = svg
+				.selectAll(".mpercent")
+				.data(company_stats)
+				.enter()
+				.append("text")
+				.attr("class", "mpercent");
+			var f_percs = svg
+				.selectAll(".fpercent")
+				.data(company_stats)
+				.enter()
+				.append("text")
+				.attr("class", "fpercent");
+			update(company_stats);
+			m_bars.on("click", function(d) {
+				svg
+					.append("circle")
+					.attr("cx",40)
+					.attr("cy",200)
+					.attr("r", d.percent_female_eng);
+			});
+			//m_bars.on("hover", function(d) { svg.append("text")
+			f_bars.on("click", function(d) {
+				svg
+					.append("circle")
+					.attr("cx",40)
+					.attr("cy",200)
+					.attr("r", d.percent_female_eng);
+			});
+			f_bars.on("mouseover", function(d) {
+				d3.select("#f" + d.key)
+					.attr("visibility", "visible");
+			});
+			f_bars.on("mouseout", function(d) {
+				d3.select("#f" + d.key)
+					.attr("visibility", "hidden");
+			});
+			m_bars.on("mouseover", function(d) {
+				d3.select("#m" + d.key)
+					.attr("visibility", "visible");
+			});
+			m_bars.on("mouseout", function(d) {
+				d3.select("#m" + d.key)
+					.attr("visibility", "hidden");
+			});
+			// pie chart?
+			var r = 50;
+			var vis = svg.append("svg:g").attr("transform", "translate(" + 20 + "," + 100 + ")");
+			var arc = d3.svg.arc().outerRadius(r);
+			var pie = d3.layout.pie()           //this will create arc data for us given a list of values
+				 .value(function(d) { return d.value; });    //tell it out to access the value of each element in our data array
+			  
+			// updates visualization with newly sorted data
+			function update(data) {
+				var fb = svg.selectAll(".female").data(data);
+				var mb = svg.selectAll(".male").data(data);
+				var txt = svg.selectAll(".label").data(data);
+				var fpct = svg.selectAll(".fpercent").data(data);
+				var mpct = svg.selectAll(".mpercent").data(data);
+				txt
+					.attr({
+						x: (width/2)+10,
+						y: function(d, i){ return ((i+1)*(tall+padding))+24 + offset; }})
+					.text(function(d){return d.company;});		
+				fb
+					.attr({
+						x: width/2,
+						x: function(d){ return width/2 - percent_scale(+d.percent_female_eng);},
+						y: function(d, i){ return (i+1)*(tall+padding) + offset; },
+						width: function(d){ return percent_scale(+d.percent_female_eng); },
+						height:tall,
+						});
+				mb
+					.attr({
+						x: width/2,
+						y: function(d, i){ return (i+1)*(tall+padding)+offset; },
+						width: function(d){ return percent_scale(100-d.percent_female_eng); },
+						height:tall,
+						});
+				fpct
+					.attr({
+						x: function(d){ return width/2 - percent_scale(+d.percent_female_eng)-25;},
+						y: function(d, i){ return ((i+1)*(tall+padding))+24 + offset; },
+						id: function(d){ return "f"+ d.key; },
+						visibility: "hidden"})
+					.text(function(d) { return Math.round(100*d.percent_female_eng)/100 + "%"; })
+					.style("font-size", "130%");
+				mpct
+					.attr({
+						x: function(d){ return width/2 + percent_scale(100 - d.percent_female_eng) + 10;},
+						y: function(d, i){ return ((i+1)*(tall+padding))+24 + offset; },
+						id: function(d){ return "m" + d.key; },
+						visibility: "hidden"})
+					.text(function(d) { return Math.round(100*(100-d.percent_female_eng))/100 + "%"; })
+					.style("font-size", "130%");
+			}
+
+	});
+	</script>
+	
+</body>
+
+

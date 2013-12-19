@@ -1,0 +1,9 @@
+[
+{ "description":"Jeff Bezos (Amazon CEO)" , "company":"Amazon" , "salary":1680000 , "pic":""}, 
+{ "description":"Amazon warehouse associate" , "company":"Amazon" , "salary":23920 , "pic":""}, 
+{ "description":"Tim Cook (Apple CEO)" , "company":"Apple" , "salary":4170000 , "pic":""}, 
+{ "description":"Apple Mac Genius" , "company":"Apple" , "salary":37557 , "pic":""}, 
+{ "description":"Meg Whitman (HP President + CEO)" , "company":"HP" , "salary":15400000 , "pic":""}, 
+{ "description":"HP Software Engineer" , "company":"HP" , "salary":93324 , "pic":""},
+{ "description":"Foxconn factory worker" , "company":"Foxconn" , "salary":7200 , "pic":""}
+]
