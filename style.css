@@ -6,13 +6,12 @@ body {
 h1 {
 	color:#ffffff;
 	text-align: center;
-	font-size:200%;
+	font-size:214%;
 	padding:.5em;
-	font-family:'Gilda Display', serif;
+	font-family:serif;
 	letter-spacing:2px;
 }   
 div#header{
-	
 	background:#000000;
 }
 #main {
@@ -65,7 +64,7 @@ h2 {
 }
 div#side { 
 	position: fixed;
-	width: 15%;
+	width: 17%;
 	margin-left:0.3em;
 	background:#ffffff;
 	border-radius:9px;

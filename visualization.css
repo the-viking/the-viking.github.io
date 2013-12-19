@@ -1,3 +1,4 @@
+/* styles for SVG data visualizations */
 .female {
 	fill:#ED427B;
 }
@@ -16,4 +17,5 @@ line {
 }
 .big {
 	font-size:130%;
+	font-weight:bold;
 }

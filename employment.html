@@ -5,7 +5,6 @@
 	<script type="text/javascript" src="d3/d3.v3.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css" />
 	<link rel="stylesheet" type="text/css" href="visualization.css" />
-	<link href='http://fonts.googleapis.com/css?family=Gilda+Display' rel='stylesheet' type='text/css'>
 	<title>Women in Software</title>
 </head>
 <body>
@@ -53,9 +52,10 @@
 		.attr("y1", 5)
 		.attr("x2", width/2)
 		.attr("y2", 30);
+	// add key to visualization
 	svg.append("text").attr("x", (width/2)-100).attr("y",23).attr("class","big").text("% female");
 	svg.append("text").attr("x", (width/2)+20).attr("y",23).attr("class","big").text("% male");
-	// http://www.dol.gov/wb/factsheets/Qf-laborforce-10.htm
+	// add bars for total US workforce (from http://www.dol.gov/wb/factsheets/Qf-laborforce-10.htm)
 	var percent_female_workers = 47;
 	svg.append("rect")
 		.attr("x", width/2 - percent_scale(percent_female_workers))
@@ -76,6 +76,7 @@
 	d3.csv("women_in_software.csv", function(company_stats){
 			// by default, sort by size
 			company_stats.sort(function(a, b) { return b.num_eng - a.num_eng; });
+			// if sort input is changed, sort data and update visuals
 			d3.select("#sort").on("change", function(d) {
 				var sort_by = this.value;
 				if(sort_by == "size"){	
