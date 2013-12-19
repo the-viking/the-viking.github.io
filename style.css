@@ -12,6 +12,11 @@ h1 {
 	font-family:serif;
 	letter-spacing:1px;
 }   
+/*
+.webkit a#title {
+	background-image:url('palms2.jpg');
+}
+*/
 a#title {
 	display: block;
 	color:#ffffff;
@@ -21,10 +26,11 @@ a#title {
 	font-family:serif;
 	letter-spacing:1px;
 	text-decoration:none;
-	background-image:url('palms2.jpg');
 	font-weight:bold;
+	/*
 	-webkit-text-fill-color: transparent;
 	-webkit-background-clip: text;
+	*/
 }
 div#header {
 	background:#000000;
