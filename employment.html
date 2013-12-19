@@ -8,22 +8,31 @@
 	<title>Women in Software</title>
 </head>
 <body>
-	<div id="header"><a id="home" href="index.html"><div class="circ"></div></a><h1>Percentage of male and female engineers in software companies</h1></div>
+	<div id="header"><a id="home" href="index.html"><div class="circ"></div></a><a href="index.html"><h1>Percentage of male and female engineers in software companies</h1></a>s</div>
 	<div id="side">
-	<form>
-	<p>Sort by:</p>
-		<select id="sort">
-			<option value="size">Company size</option>
-			<option value="perc">Percent women</option>
-			<option value="alph">Alphabetical</option>
-		</select>
-		<button type="button" id="reverse">Reverse</button>
-		<p id="desc">
-			These values are pulled from <a href="https://github.com/triketora/women-in-software-eng">this
-				data repository</a>, and are submitted by people who work at these companies. If you have any 
-			information you'd like to contribute, please visit the page and read more about it.
+		<form>
+		<p class="small">Sort by:</p>
+			<select id="sort">
+				<option value="size">Company size</option>
+				<option value="perc">Percent women</option>
+				<option value="alph">Alphabetical</option>
+			</select>
+			<button type="button" id="reverse">Reverse</button>
+			<p id="desc">
+				These values are pulled from <a href="https://github.com/triketora/women-in-software-eng">this
+					data repository</a>, and are submitted by people who work at these companies. If you have any 
+				information you'd like to contribute, please visit the page and read more about it.
 		</p>
-	</form>
+		</form>
+	</div>
+	<div id="right">
+		<h3></h3>
+		<ul>
+			<li id="team"></li>
+			<li id="num"></li>
+			<li id="num_female"></li>
+			<li id="updated"></li>
+		</ul>
 	</div>
 	<script type="text/javascript">
 	// constants for sizing and spacing graphics
@@ -43,15 +52,15 @@
 		.attr("height", height);
 	svg.append("rect")
 		.attr("fill", "#ffffff")
-		.attr("x", (width/2)-100)
-		.attr("y", 5)
-		.attr("width",200)
-		.attr("height",25);
+		.attr("x", (width/2)-110)
+		.attr("y", 0)
+		.attr("width",215)
+		.attr("height",tall);
 	svg.append("line")
 		.attr("x1", width/2)
-		.attr("y1", 5)
+		.attr("y1", 0)
 		.attr("x2", width/2)
-		.attr("y2", 30);
+		.attr("y2", tall);
 	// add key to visualization
 	svg.append("text").attr("x", (width/2)-100).attr("y",23).attr("class","big").text("% female");
 	svg.append("text").attr("x", (width/2)+20).attr("y",23).attr("class","big").text("% male");
@@ -133,21 +142,16 @@
 				.append("text")
 				.attr("class", "fpercent");
 			update(company_stats);
-			m_bars.on("click", function(d) {
-				svg
-					.append("circle")
-					.attr("cx",40)
-					.attr("cy",200)
-					.attr("r", d.percent_female_eng);
-			});
-			//m_bars.on("hover", function(d) { svg.append("text")
-			f_bars.on("click", function(d) {
-				svg
-					.append("circle")
-					.attr("cx",40)
-					.attr("cy",200)
-					.attr("r", d.percent_female_eng);
-			});
+			function company_info(d){
+				var div = d3.select("#right").style("display", "block");
+				div.selectAll("h3").text(d.company);
+				div.selectAll("#team").text("Team " + d.team);
+				div.selectAll("#num").text(d.num_eng + " engineers");
+				div.selectAll("#num_female").text(d.num_female_eng + " female engineers");
+				div.selectAll("#updated").text("Last updated on: " + d.last_updated);
+			}
+			m_bars.on("click", company_info);
+			f_bars.on("click", company_info);
 			f_bars.on("mouseover", function(d) {
 				d3.select("#f" + d.key)
 					.attr("visibility", "visible");
@@ -179,19 +183,22 @@
 				var fpct = svg.selectAll(".fpercent").data(data);
 				var mpct = svg.selectAll(".mpercent").data(data);
 				txt
+					.transition()
 					.attr({
 						x: (width/2)+10,
 						y: function(d, i){ return ((i+1)*(tall+padding))+24 + offset; }})
 					.text(function(d){return d.company;});		
 				fb
+					.transition()
+					.duration(1000)
 					.attr({
-						x: width/2,
 						x: function(d){ return width/2 - percent_scale(+d.percent_female_eng);},
 						y: function(d, i){ return (i+1)*(tall+padding) + offset; },
 						width: function(d){ return percent_scale(+d.percent_female_eng); },
-						height:tall,
+						height:tall
 						});
 				mb
+					.transition()
 					.attr({
 						x: width/2,
 						y: function(d, i){ return (i+1)*(tall+padding)+offset; },
