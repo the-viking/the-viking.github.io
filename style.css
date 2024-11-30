@@ -52,9 +52,16 @@ div#header {
 	min-height: 350px; 
 }
 blockquote{
-	display: none;
+	display: block;
+    font-size:150%;
+    font-family:serif;
+    padding: 1em;
+    width:80%;
+    margin:0 auto;
 	background:#ffffff;
-	padding:0.1em;
+	background-color:rgba(255,255,255,0.5);
+	border-radius:9px;
+    margin-bottom: 2em;
 }
 a.viz {
 	float:left;
@@ -101,8 +108,8 @@ div#side {
 	background-color:rgba(255,255,255,0.5);
 	border-radius:9px;
 	padding:.1em;
-    margin-left:1em;
-	padding-left:.35em;
+    margin-left:1.7em;
+	padding-left:1.1em;
 	padding-right:.35em;
 }
 div#right {
