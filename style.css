@@ -94,13 +94,14 @@ h2 {
 	border-radius: 15px;
 }
 div#side { 
-	position: relative;
+	float:left;
 	width: 17%;
 	margin-left:0.3em;
 	background:#ffffff;
 	background-color:rgba(255,255,255,0.5);
 	border-radius:9px;
 	padding:.1em;
+    margin-left:1em;
 	padding-left:.35em;
 	padding-right:.35em;
 }
@@ -108,12 +109,13 @@ div#right {
 	display:none;
 	position: fixed;
 	width: 17%;
-	right:0;
+	right:1%;
 	background:#ffffff;
 	background-color:rgba(255,255,255,0.5);
 	border-radius:9px;
 	padding:.1em;
-	margin-right:0.4em;
+	margin-right:1em;
+    margin-top:1em;
 	padding-left:.35em;
 	padding-right:.35em;
 }

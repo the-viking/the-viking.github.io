@@ -19,8 +19,8 @@
 			</select>
 			<button type="button" id="reverse">Reverse</button>
 			<p id="desc">
-				These values are pulled from <a href="https://github.com/triketora/women-in-software-eng">this
-					data repository</a>, and are submitted by people who work at these companies. If you have any 
+				These values were pulled from <a href="https://github.com/triketora/women-in-software-eng">this
+					data repository</a> in 2015, and are submitted by people who work at these companies. If you have any 
 				information you'd like to contribute, please visit the page and read more about it.
 		</p>
 		</form>
@@ -52,9 +52,9 @@
 		.attr("height", height);
 	svg.append("rect")
 		.attr("fill", "#ffffff")
-		.attr("x", (width/2)-110)
+		.attr("x", (width/2)-130)
 		.attr("y", 0)
-		.attr("width",215)
+		.attr("width",245)
 		.attr("height",tall);
 	svg.append("line")
 		.attr("x1", width/2)
@@ -62,7 +62,7 @@
 		.attr("x2", width/2)
 		.attr("y2", tall);
 	// add key to visualization
-	svg.append("text").attr("x", (width/2)-100).attr("y",23).attr("class","big").text("% female");
+	svg.append("text").attr("x", (width/2)-120).attr("y",23).attr("class","big").text("% female");
 	svg.append("text").attr("x", (width/2)+20).attr("y",23).attr("class","big").text("% male");
 	// add bars for total US workforce (from http://www.dol.gov/wb/factsheets/Qf-laborforce-10.htm)
 	var percent_female_workers = 47;
